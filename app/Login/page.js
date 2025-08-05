@@ -26,7 +26,7 @@ export default function Login() {
     try {
       // Make POST request to login API
       const response = await axios.post(
-        "http://localhost:8085/vendors/vendorLogin",
+        "https://api.worldtriplink.com/vendors/vendorLogin",
         {
           email,
           password,
@@ -59,7 +59,7 @@ export default function Login() {
 const userId = user?.vendorId; // or get from Redux/context
                  console.log("userId", userId);
 
-            fetch("http://localhost:8085/register-vendor-token", {
+            fetch("https://api.worldtriplink.com/register-vendor-token", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json"

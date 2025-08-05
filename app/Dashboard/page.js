@@ -26,7 +26,7 @@
 //     const fetchBookings = async () => {
 //       try {
 //         const response = await axios.get(
-//           `http://localhost:8085/${vendorId}/vendorByBookings`
+//           `https://api.worldtriplink.com/${vendorId}/vendorByBookings`
 //         );
 //         setBookings(response.data);
 //       } catch (error) {
@@ -218,7 +218,7 @@ const Dashboard = () => {
     const fetchBookings = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8085/${vendorId}/vendorByBookings`
+          `https://api.worldtriplink.com/${vendorId}/vendorByBookings`
         );
         setBookings(response.data);
       } catch (error) {

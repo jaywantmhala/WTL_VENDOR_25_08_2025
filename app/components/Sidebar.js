@@ -26,7 +26,7 @@
 
 //     try {
 //       const response = await axios.post(
-//         "http://localhost:8085/vendors/vendorLogin",
+//         "https://api.worldtriplink.com/vendors/vendorLogin",
 //         {
 //           email,
 //           password,
@@ -304,7 +304,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8085/vendors/vendorLogin",
+        "https://api.worldtriplink.com/vendors/vendorLogin",
         {
           email,
           password,
