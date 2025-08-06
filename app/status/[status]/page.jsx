@@ -3,8 +3,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "next/navigation";
-import Sidebar from "@/app/components/Sidebar";
-import Navbar from "@/app/components/Navbar";
+import Sidebar from "../../components/Sidebar";
+import Navbar from "../../components/Navbar";
 import Link from "next/link";
 import { FaArrowRight } from "react-icons/fa";
 import { MdDeleteOutline } from "react-icons/md";
@@ -44,6 +44,17 @@ const Page = () => {
 
     fetchBookingsByStatus(); // Fetch bookings when component mounts
   }, [params.status]); // Re-fetch when `status` changes
+
+  const deleteBooking = async (bookingId) => {
+    try {
+      await axios.delete(`https://api.worldtriplink.com/bookings/${bookingId}`);
+      // Remove the deleted booking from the state
+      setBookings(bookings.filter(booking => booking.id !== bookingId));
+    } catch (error) {
+      console.error("Failed to delete booking:", error);
+      setError("Failed to delete booking");
+    }
+  };
 
   return (
     <div className="flex h-screen overflow-hidden">

@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { FaEnvelope, FaLock } from "react-icons/fa"; // Import icons
 import { useRouter } from "next/navigation";
 import { initializeApp } from 'firebase/app';
 import { getMessaging, getToken, onMessage } from 'firebase/messaging';
-import { messaging} from '@/firebase-config';
+import { messaging} from '../../firebase-config';
 
 
 
@@ -47,10 +47,11 @@ export default function Login() {
           console.log("Service Worker registered:", registration);
 
           // Get token
-          getToken(messaging, {
-            vapidKey: "BFeBBpUyxnCf54AL_Z16F357mX3oYFetAsdoMNhMrBmd1rPSFbpfFidAmq4Ho2NKNeSLe_7ogKudgk6lx8w5mts",
-            serviceWorkerRegistration: registration,
-          })
+          if (messaging) {
+            getToken(messaging, {
+              vapidKey: "BFeBBpUyxnCf54AL_Z16F357mX3oYFetAsdoMNhMrBmd1rPSFbpfFidAmq4Ho2NKNeSLe_7ogKudgk6lx8w5mts",
+              serviceWorkerRegistration: registration,
+            })
             .then((currentToken) => {
               if (currentToken) {
                 console.log("FCM Token:", currentToken);
@@ -76,6 +77,7 @@ const userId = user?.vendorId; // or get from Redux/context
             .catch((err) => {
               console.error("An error occurred while retrieving token.", err);
             });
+          }
         });
     }
 
@@ -91,11 +93,13 @@ const userId = user?.vendorId; // or get from Redux/context
   };
 
   useEffect(() => {
-  onMessage(messaging, (payload) => {
-    console.log('Message received:', payload);
-    // You can show in-app toast/notification here
-  });
-}, []);
+    if (messaging) {
+      onMessage(messaging, (payload) => {
+        console.log('Message received:', payload);
+        // You can show in-app toast/notification here
+      });
+    }
+  }, []);
   // Render the login form
 
   return (

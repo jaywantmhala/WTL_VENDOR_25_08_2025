@@ -97,3 +97,11 @@
 // };
 
 // export default Payments;
+
+export default function Payments() {
+  return (
+    <div>
+      <h1>Payments Page - Under Development</h1>
+    </div>
+  );
+}

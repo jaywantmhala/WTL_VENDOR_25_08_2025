@@ -90,3 +90,11 @@
 // };
 
 // export default Complaints;
+
+export default function Complaints() {
+  return (
+    <div>
+      <h1>Complaints Page - Under Development</h1>
+    </div>
+  );
+}

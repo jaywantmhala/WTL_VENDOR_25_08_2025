@@ -96,3 +96,11 @@
 // };
 
 // export default Vendors;
+
+export default function Vendors() {
+  return (
+    <div>
+      <h1>Vendors Page - Under Development</h1>
+    </div>
+  );
+}

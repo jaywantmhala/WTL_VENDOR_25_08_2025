@@ -1,7 +1,8 @@
 // src/firebase-config.js
 'use client';
 import { initializeApp } from "firebase/app";
-import { getMessaging,getToken } from "firebase/messaging";
+import { getMessaging, getToken, onMessage } from "firebase/messaging";
+import axios from "axios";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBehR8nGZTrhZYzoLLa78j1EhUPdZErxtU",
@@ -14,11 +15,16 @@ const firebaseConfig = {
 };
 
 const firebaseApp = initializeApp(firebaseConfig);
-const messaging = getMessaging(firebaseApp);
+
+// Only initialize messaging on the client side
+let messaging = null;
+if (typeof window !== 'undefined') {
+  messaging = getMessaging(firebaseApp);
+}
 
 export { messaging };
 
-if ('serviceWorker' in navigator) {
+if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
   navigator.serviceWorker
     .register('/firebase-messaging-sw.js')
     .then(function(registration) {
@@ -32,10 +38,12 @@ if ('serviceWorker' in navigator) {
 
 
 
-export const messagingPromise = Promise.resolve(messaging);
+export const messagingPromise = messaging ? Promise.resolve(messaging) : Promise.resolve(null);
 
 
 export async function requestFCMPermissionAndRegister(userId) {
+  if (typeof window === 'undefined' || !messaging) return;
+
   try {
     const permission = await Notification.requestPermission();
     if (permission === 'granted') {
@@ -54,7 +62,9 @@ export async function requestFCMPermissionAndRegister(userId) {
 }
 
 export function setupForegroundNotificationHandler() {
-  onMessage((payload) => {
+  if (typeof window === 'undefined' || !messaging) return;
+
+  onMessage(messaging, (payload) => {
     console.log('Foreground Notification:', payload);
     const { title, body } = payload.notification;
     new Notification(title, { body });
